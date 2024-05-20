@@ -1,4 +1,3 @@
-# Lirego
 <img src="https://github.com/Vaniog/metopt/blob/main/lab1/img/metopt-logo.png" width="100">
 
 Optimization methods Lab №3
@@ -9,7 +8,7 @@ Team:
 - Tarasov Ivan M3233
 - Farafonov Egor M3233
 
-
+# Lirego
 Function prediction and other optimization problems solution with linear regression
 
 # Examples
