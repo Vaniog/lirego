@@ -1,0 +1,69 @@
+syntax = "proto3";
+option go_package = "./generated";
+
+message TrainRequest {
+  // path to train dataset
+  string path = 1;
+  TrainerConfig trainerConfig = 2;
+  ModelConfig modelConfig = 3;
+}
+
+message ModelConfig {
+  string type = 1;
+  string regularizator = 2;
+  string loss = 3;
+  repeated double otherParams = 4;
+}
+
+message TrainerConfig {
+  string type = 1;
+  repeated double params = 2;
+}
+
+message DataSet {
+  repeated Row rows = 1;
+}
+
+message Benchmark {
+  int64 time = 1;
+  int64 mem = 2;
+}
+
+message Row {
+  repeated double x = 1;
+  optional double y = 2;
+}
+
+message Model {
+  string type = 1;
+  repeated double weights = 2;
+  double bias = 3;
+  int64 rowLen = 4;
+}
+
+message TrainResponse {
+  string modelId = 1;
+  Benchmark benchmark = 2;
+}
+
+message PredictRequest {
+  string modelId = 1;
+  DataSet data = 2;
+}
+
+message PredictResponse {
+  repeated double y = 1;
+  Benchmark benchmark = 2;
+}
+
+message GetModelRequest {
+  string id = 1;
+}
+
+service Ml {
+  rpc train(TrainRequest) returns (TrainResponse);
+  rpc predict(PredictRequest) returns (PredictResponse);
+  rpc getModel(GetModelRequest) returns (Model);
+}
+
+//protoc --go_out=./ --go-rpc_out=./ -I ./ ./*.proto
