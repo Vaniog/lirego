@@ -29,7 +29,6 @@ func lossGrad(m ml.Model, ds DataSet) (*mat.VecDense, float64) {
 		if m.Config().Bias {
 			biasGradSum += errorTerm
 		}
-
 	}
 
 	gradSum.ScaleVec(1.0/float64(ds.Len()), gradSum)

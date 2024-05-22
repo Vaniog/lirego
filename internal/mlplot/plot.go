@@ -74,7 +74,6 @@ func PredictWithLinearAndPlot(ds training.DataSet) {
 	})
 
 	trainer := training.NewGreedyTrainer(
-		0,
 		10000,
 		0.005,
 	)
@@ -99,10 +98,10 @@ func PredictWithPolynomialAndPlot(ds training.DataSet, degree int, imagePath str
 		Bias:   true,
 	}, degree)
 
-	trainer := training.NewGreedyTrainer(
-		0,
-		100000,
-		0.5,
+	trainer := training.NewBatchTrainer(
+		50,
+		training.ConstLearningRate(1),
+		10000,
 	)
 
 	trainer.Train(pm, ds)

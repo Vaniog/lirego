@@ -39,7 +39,6 @@ func getTrainer(config *generated.TrainerConfig) training.Trainer {
 	switch config.Type {
 	case "GreedyTrainer":
 		return training.NewGreedyTrainer(
-			config.Params[0],
 			int(config.Params[1]),
 			config.Params[2],
 		)

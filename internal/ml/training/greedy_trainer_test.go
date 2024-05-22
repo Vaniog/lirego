@@ -18,7 +18,6 @@ func TestGreedyTrainer_LinearModel(t *testing.T) {
 	})
 
 	trainer := NewGreedyTrainer(
-		0.001,
 		100000,
 		0.001,
 	)
@@ -42,7 +41,6 @@ func TestGreedyTrainer_LinearModelWithBias(t *testing.T) {
 	})
 
 	trainer := NewGreedyTrainer(
-		0.001,
 		100000,
 		0.001,
 	)
@@ -71,7 +69,6 @@ func FuzzGreedyTrainer_LinearModelFuzz(f *testing.F) {
 		ds = mms.Transform(ds)
 
 		trainer := NewGreedyTrainer(
-			0.001,
 			100000,
 			0.001,
 		)
@@ -101,7 +98,6 @@ func TestGreedyTrainer_PolynomialModel(t *testing.T) {
 	})
 
 	trainer := NewGreedyTrainer(
-		0.001,
 		100000,
 		0.01,
 	)

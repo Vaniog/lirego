@@ -13,12 +13,10 @@ type GreedyTrainer struct {
 }
 
 func NewGreedyTrainer(
-	targetLoss float64,
 	maxIterations int,
 	gradStep float64,
 ) *GreedyTrainer {
 	return &GreedyTrainer{
-		targetLoss:    targetLoss,
 		maxIterations: maxIterations,
 		gradStep:      gradStep,
 	}

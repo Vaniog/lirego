@@ -20,6 +20,6 @@ func ExamplePredictWithPolynomialAndPlot() {
 	PredictWithPolynomialAndPlot(DatasetFromFunction(
 		AppendNoise(func(x float64) float64 {
 			return math.Sin(x*2*math.Pi) / 2
-		}, 0.2), -1, 1, 100), 10, "dataset.png")
+		}, 0.2), -1, 1, 1000), 10, "dataset.png")
 	// Output:
 }
