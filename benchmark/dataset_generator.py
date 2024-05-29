@@ -10,10 +10,10 @@ import matplotlib.pyplot as plt
 import pandas
 import pandas as pd
 
-from lab3.benchmark.visualization import plot_dataset
+from benchmark.visualization import plot_dataset
 from transport.generated.api_pb2 import Model
 
-DATASET_ROOT = "../impl/test-data"
+DATASET_ROOT = "../internal/test-data"
 def full_path(p):
     return os.path.join(DATASET_ROOT, p)
 

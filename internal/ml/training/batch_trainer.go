@@ -3,7 +3,6 @@ package training
 import (
 	"github.com/Vaniog/lirego/internal/ml"
 	"gonum.org/v1/gonum/mat"
-	"log"
 	"math/rand"
 )
 
@@ -28,9 +27,9 @@ func NewBatchTrainer(
 func (b BatchTrainer) Train(m ml.Model, ds DataSet) {
 	for i := range b.iterations {
 		b.eraTrain(m, ds, i)
-		if i%100 == 0 {
-			log.Println(i, LossScore(m, ds))
-		}
+		//if i%100 == 0 {
+		//	log.Println(i, LossScore(m, ds))
+		//}
 	}
 }
 

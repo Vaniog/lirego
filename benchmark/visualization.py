@@ -5,8 +5,8 @@ import numpy as np
 import pandas
 import pandas as pd
 
-from lab3.benchmark.transport import get_stub
-from lab3.benchmark.transport.generated.api_pb2 import PredictRequest, DataSet, Row, TrainRequest, TrainerConfig, \
+from benchmark.transport import get_stub
+from benchmark.transport.generated.api_pb2 import PredictRequest, DataSet, Row, TrainRequest, TrainerConfig, \
     ModelConfig
 
 
@@ -127,6 +127,6 @@ if __name__ == '__main__':
         modelConfig=ModelConfig(type="PolynomialModel", regularizator="EmptyRegularizator", loss="MSELoss",
                                 otherParams=[5]),
     ))
-    print(r)
-    plot_model_over_dataset("../impl/test-data/test_1dim.csv", r.modelId)
+    # print(r)
+    plot_model_over_dataset("../internal/test-data/test_1dim.csv", r.modelId)
     # plot_model_over_dataset("../impl/test-data/test_1dim.csv", "20284196-2db3-4494-9623-127a58b497de")

@@ -3,7 +3,6 @@ package training
 import (
 	"github.com/Vaniog/lirego/internal/ml"
 	"gonum.org/v1/gonum/mat"
-	"log"
 )
 
 type GreedyTrainer struct {
@@ -32,8 +31,8 @@ func (gt GreedyTrainer) Train(m ml.Model, ds DataSet) {
 		m.SetWeights(wUpdated)
 		m.SetBias(m.Bias() - gt.gradStep*biasGrad)
 		iterations++
-		if iterations%1000 == 0 {
-			log.Println(iterations, LossScore(m, ds))
-		}
+		//if iterations%1000 == 0 {
+		//	log.Println(iterations, LossScore(m, ds))
+		//}
 	}
 }

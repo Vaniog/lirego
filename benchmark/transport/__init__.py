@@ -1,6 +1,6 @@
 import grpc
 
-from lab3.benchmark.transport.generated.api_pb2_grpc import MlStub
+from benchmark.transport.generated.api_pb2_grpc import MlStub
 
 
 def __create_stub():
