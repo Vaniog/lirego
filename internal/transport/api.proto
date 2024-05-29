@@ -39,6 +39,7 @@ message Model {
   repeated double weights = 2;
   double bias = 3;
   int64 rowLen = 4;
+  repeated double otherParams = 5;
 }
 
 message TrainResponse {
