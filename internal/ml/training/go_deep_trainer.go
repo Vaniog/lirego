@@ -31,7 +31,7 @@ func (gt GoDeepTrainer) Train(m ml.Model, ds DataSet) {
 	}
 
 	neural := deep.NewNeural(&deep.Config{
-		Inputs:     len(data[0].Input),
+		Inputs:     ds.Dim(),
 		Layout:     []int{1},
 		Activation: deep.ActivationNone,
 		Mode:       deep.ModeRegression,
@@ -39,8 +39,8 @@ func (gt GoDeepTrainer) Train(m ml.Model, ds DataSet) {
 		Bias:       true,
 	})
 	trainer := training.NewBatchTrainer(
-		training.NewSGD(0.005, 0.1, 0, true),
-		50,
+		training.NewSGD(0.005, 0.1, 0, false),
+		0,
 		300,
 		16,
 	)
@@ -52,4 +52,5 @@ func (gt GoDeepTrainer) Train(m ml.Model, ds DataSet) {
 		weights = append(weights, neural.Layers[0].Neurons[0].In[i].Weight)
 	}
 	m.SetWeights(mat.NewVecDense(len(weights), weights))
+	m.SetBias(data[0].Response[0] - neural.Predict(data[0].Input)[0])
 }
