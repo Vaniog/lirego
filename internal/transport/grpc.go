@@ -84,7 +84,6 @@ func (s *MlServer) GetModel(_ context.Context, r *generated.GetModelRequest) (*g
 		Type:    getModelName(m),
 		Weights: m.Weights().RawVector().Data,
 	}, nil
-
 }
 
 func StartServer() {
