@@ -11,6 +11,10 @@ type PolynomialModel struct {
 	ws   []*mat.VecDense
 }
 
+func (pm *PolynomialModel) Degree() int {
+	return len(pm.ws)
+}
+
 func (pm *PolynomialModel) SetWeights(w mat.Vector) {
 	rowLen := pm.Config().RowLen
 	for i := range pm.ws {

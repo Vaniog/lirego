@@ -93,10 +93,11 @@ func NewModelSerializer(path string) *ModelSerializer {
 func (s *ModelSerializer) Serialize(model ml.Model) (string, error) {
 	fmt.Println(model.Bias())
 	transportModel := &generated.Model{
-		Weights: model.Weights().RawVector().Data,
-		Type:    getModelName(model),
-		Bias:    model.Bias(),
-		RowLen:  int64(model.Config().RowLen),
+		Weights:     model.Weights().RawVector().Data,
+		Type:        getModelName(model),
+		Bias:        model.Bias(),
+		RowLen:      int64(model.Config().RowLen),
+		OtherParams: getOtherParams(model),
 	}
 	id := uuid.New()
 	serialized, err := json.Marshal(transportModel)
@@ -108,6 +109,14 @@ func (s *ModelSerializer) Serialize(model ml.Model) (string, error) {
 		return id.String(), err
 	}
 	return id.String(), nil
+}
+
+func getOtherParams(m interface{}) []float64 {
+	switch m := m.(type) {
+	case *ml.PolynomialModel:
+		return []float64{float64(m.Degree())}
+	}
+	return nil
 }
 
 func (s *ModelSerializer) Deserialize(id string) (ml.Model, error) {

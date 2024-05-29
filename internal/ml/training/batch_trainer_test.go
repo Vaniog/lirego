@@ -16,8 +16,8 @@ func TestBatchTrainer_LinearModel(t *testing.T) {
 
 	trainer := NewBatchTrainer(
 		2,
-		ConstLearningRate(0.1),
 		1000,
+		ConstLearningRate(0.1),
 	)
 
 	m := ml.NewLinearModel(ml.Config{
@@ -40,8 +40,8 @@ func TestBatchTrainer_LinearModelWithBias(t *testing.T) {
 
 	trainer := NewBatchTrainer(
 		2,
-		ConstLearningRate(0.1),
 		1000,
+		ConstLearningRate(0.1),
 	)
 
 	m := ml.NewLinearModel(ml.Config{
@@ -69,8 +69,8 @@ func FuzzBatchTrainer_LinearModelFuzz(f *testing.F) {
 
 		trainer := NewBatchTrainer(
 			10,
-			ConstLearningRate(0.1),
 			1000,
+			ConstLearningRate(0.1),
 		)
 
 		m := ml.NewLinearModel(ml.Config{
@@ -99,8 +99,8 @@ func TestBatchTrainer_PolynomialModel(t *testing.T) {
 
 	trainer := NewBatchTrainer(
 		2,
-		ConstLearningRate(0.01),
 		1000,
+		ConstLearningRate(0.01),
 	)
 
 	m := ml.NewPolynomialModel(ml.Config{

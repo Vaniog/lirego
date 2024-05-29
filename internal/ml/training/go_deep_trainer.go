@@ -1,9 +1,8 @@
 package training
 
 import (
-	"metopt/ml"
-
-	deep "github.com/patrikeh/go-deep"
+	"github.com/Vaniog/lirego/internal/ml"
+	"github.com/patrikeh/go-deep"
 	"github.com/patrikeh/go-deep/training"
 	"gonum.org/v1/gonum/mat"
 )
@@ -21,7 +20,7 @@ func NewGoDeepTrainer(
 }
 
 func (gt GoDeepTrainer) Train(m ml.Model, ds DataSet) {
-	data := []training.Example{}
+	var data []training.Example
 	for i := range ds.Len() {
 		row := ds.Row(i)
 		data = append(data,
@@ -37,11 +36,16 @@ func (gt GoDeepTrainer) Train(m ml.Model, ds DataSet) {
 		Activation: deep.ActivationNone,
 		Mode:       deep.ModeRegression,
 		Weight:     deep.NewNormal(1, 0),
-		Bias:       false,
+		Bias:       true,
 	})
-	trainer := training.NewBatchTrainer(training.NewSGD(0.005, 0.1, 0, true), 50, 300, 16)
+	trainer := training.NewBatchTrainer(
+		training.NewSGD(0.005, 0.1, 0, true),
+		50,
+		300,
+		16,
+	)
 
-	trainer.Train(neural, data, data, 1000)
+	trainer.Train(neural, data, data, gt.maxIterations)
 
 	weights := make([]float64, 0)
 	for i := range len(data[0].Input) {
