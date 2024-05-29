@@ -100,8 +100,8 @@ func PredictWithPolynomialAndPlot(ds training.DataSet, degree int, imagePath str
 
 	trainer := training.NewBatchTrainer(
 		50,
-		training.ConstLearningRate(1),
 		10000,
+		training.ConstLearningRate(1),
 	)
 
 	trainer.Train(pm, ds)

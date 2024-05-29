@@ -39,9 +39,27 @@ func getTrainer(config *generated.TrainerConfig) training.Trainer {
 	switch config.Type {
 	case "GreedyTrainer":
 		return training.NewGreedyTrainer(
-			int(config.Params[1]),
-			config.Params[2],
+			int(config.Params[0]),
+			config.Params[1],
 		)
+	case "BatchTrainer":
+		return training.NewBatchTrainer(
+			int(config.Params[0]),
+			int(config.Params[1]),
+			getLearningRate(config.Params[2:]),
+		)
+	}
+	return nil
+}
+
+func getLearningRate(params []float64) training.LearningRate {
+	switch int(params[0]) {
+	case 0:
+		return training.ConstLearningRate(params[1])
+	case 1:
+		return training.GeometricLearningRate(params[1], params[2])
+	case 2:
+		return training.ExponentialLearningRate(params[1], params[2])
 	}
 	return nil
 }

@@ -23,7 +23,7 @@ type MlServer struct {
 
 var serializer = NewModelSerializer(ModelsFolder)
 
-func (s *MlServer) Train(ctx context.Context, r *generated.TrainRequest) (*generated.TrainResponse, error) {
+func (s *MlServer) Train(_ context.Context, r *generated.TrainRequest) (*generated.TrainResponse, error) {
 	log.Println("start training")
 	ds, err := training.NewSliceDatasetFromCSV(path.Join(DataFolder, r.Path))
 	if err != nil {
@@ -54,7 +54,7 @@ func (s *MlServer) Train(ctx context.Context, r *generated.TrainRequest) (*gener
 	}, nil
 }
 
-func (s *MlServer) Predict(ctx context.Context, r *generated.PredictRequest) (*generated.PredictResponse, error) {
+func (s *MlServer) Predict(_ context.Context, r *generated.PredictRequest) (*generated.PredictResponse, error) {
 	m, err := serializer.Deserialize(r.ModelId)
 	if err != nil {
 		return nil, err
@@ -75,7 +75,7 @@ func (s *MlServer) Predict(ctx context.Context, r *generated.PredictRequest) (*g
 	}, nil
 }
 
-func (s *MlServer) GetModel(ctx context.Context, r *generated.GetModelRequest) (*generated.Model, error) {
+func (s *MlServer) GetModel(_ context.Context, r *generated.GetModelRequest) (*generated.Model, error) {
 	m, err := serializer.Deserialize(r.Id)
 	if err != nil {
 		return nil, err

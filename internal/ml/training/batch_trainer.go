@@ -9,19 +9,19 @@ import (
 
 type BatchTrainer struct {
 	batchSize    int
-	learningRate LearningRate
 	iterations   int
+	learningRate LearningRate
 }
 
 func NewBatchTrainer(
 	batchSize int,
-	learningRate LearningRate,
 	iterations int,
+	learningRate LearningRate,
 ) *BatchTrainer {
 	return &BatchTrainer{
 		batchSize:    batchSize,
-		learningRate: learningRate,
 		iterations:   iterations,
+		learningRate: learningRate,
 	}
 }
 
