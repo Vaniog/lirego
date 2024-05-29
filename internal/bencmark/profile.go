@@ -26,6 +26,6 @@ func Profile[T any](f func() (T, error)) (T, error, *generated.Benchmark) {
 	finalMemoryUsage := measureMemory()
 	return res, err, &generated.Benchmark{
 		Mem:  int64(finalMemoryUsage - baseMemoryUsage),
-		Time: int64(elapsed),
+		Time: int64(elapsed.Milliseconds()),
 	}
 }

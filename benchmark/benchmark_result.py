@@ -1,18 +1,19 @@
 import dataclasses
 import os
+import timeit
 from collections import defaultdict
 from dataclasses import dataclass
 import typing as tp
 
 import pandas as pd
+from sklearn.linear_model import LinearRegression
 from tabulate import tabulate
 from matplotlib import pyplot as plt
 import matplotlib.colors as mcolors
-from typing_extensions import overload
 
-from common.utils import *
-from lab3.benchmark.transport import get_stub
-from lab3.benchmark.transport.generated.api_pb2 import TrainResponse, TrainRequest, PredictRequest, DataSet, Row
+from benchmark.sktlearn import load_data
+from benchmark.transport import get_stub
+from benchmark.transport.generated.api_pb2 import TrainResponse, TrainRequest, PredictRequest, DataSet, Row
 
 MAX_INT = 10 ** 9
 
@@ -140,7 +141,30 @@ def train_and_test(name: str, test_dataset_path: str, trainRequest: TrainRequest
         name=name,
         accuracy=accuracy,
         memory=train_response.benchmark.mem,
-        time=train_response.benchmark.time / 1000 / 1000
+        time=train_response.benchmark.time
+    )
+    return res
+
+
+def train_and_test_sklearn(name: str, train_dataset_path: str, test_dataset_path: str) -> ExperimentResult:
+    print(f"----{name}")
+
+    df = pd.read_csv(test_dataset_path)
+    xs = df.loc[:, df.columns[:-1]].values
+    real_values = df.loc[:, df.columns[-1]].values
+    X, y = load_data(train_dataset_path)
+
+    lin_reg = LinearRegression()
+    start = timeit.default_timer()
+    lin_reg.fit(X, y)
+    t = timeit.default_timer() - start
+    predict_response = lin_reg.predict(xs)
+    accuracy = calc_accuracy(real_values, predict_response)
+    res = ExperimentResult(
+        name=name,
+        accuracy=accuracy,
+        memory=0,
+        time=int(t * 1000),
     )
     return res
 
