@@ -24,8 +24,8 @@ func NewBatchTrainer(
 	}
 }
 
-func (b BatchTrainer) Train(m ml.Model, ds DataSet) {
-	for i := range b.iterations {
+func (b *BatchTrainer) Train(m ml.Model, ds DataSet) {
+	for i := range b.iterations / ds.Len() {
 		b.eraTrain(m, ds, i)
 		//if i%100 == 0 {
 		//	log.Println(i, LossScore(m, ds))
@@ -38,7 +38,7 @@ type fullGrad struct {
 	biasGrad float64
 }
 
-func (b BatchTrainer) eraTrain(m ml.Model, ds DataSet, iterations int) {
+func (b *BatchTrainer) eraTrain(m ml.Model, ds DataSet, iterations int) {
 	batches := batchSplit(ds, b.batchSize)
 	batchesAmount := len(batches)
 
@@ -99,7 +99,7 @@ func batchSplit(ds DataSet, batchSize int) []SliceDataSet {
 	return batches
 }
 
-func (b BatchTrainer) batchGrad(m ml.Model, batch DataSet, iterations int, gradChan chan<- fullGrad) {
+func (b *BatchTrainer) batchGrad(m ml.Model, batch DataSet, iterations int, gradChan chan<- fullGrad) {
 	grad, biasGrad := lossGrad(m, batch)
 	learningRate := b.learningRate(iterations)
 	grad.ScaleVec(learningRate, grad)

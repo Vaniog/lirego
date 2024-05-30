@@ -11,11 +11,13 @@ func TestGreedyTrainer(t *testing.T) {
 	trainer := NewGreedyTrainer(1000, 0.1)
 	testTrainerOnLinear(t, trainer)
 	testTrainerOnPolynomial(t, trainer)
+	testTrainerOnQuadratic(t, trainer)
 }
 
 func TestBatchTrainer(t *testing.T) {
 	trainer := NewBatchTrainer(2, 1000, GeometricLearningRate(1, 0.99999))
 	testTrainerOnLinear(t, trainer)
+	testTrainerOnQuadratic(t, trainer)
 	testTrainerOnPolynomial(t, trainer)
 }
 
@@ -37,6 +39,15 @@ func testTrainerOnLinear(t *testing.T, trainer Trainer) {
 	lm2 := defaultPolynomial(2, 1)
 	trainer.Train(lm2, dsLin2)
 	testScore(t, dsLin2, lm2)
+}
+
+func testTrainerOnQuadratic(t *testing.T, trainer Trainer) {
+	dsQua1 := datasetFromFunction(2, func(x ...float64) float64 {
+		return x[0]*x[1] + x[0]*x[0] + x[1]
+	}, -1, 1, 50)
+	qm1 := defaultQuadratic(2)
+	trainer.Train(qm1, dsQua1)
+	testScore(t, dsQua1, qm1)
 }
 
 func testTrainerOnPolynomial(t *testing.T, trainer Trainer) {
@@ -61,6 +72,15 @@ func defaultPolynomial(dim, degree int) ml.Model {
 		Reg:    ml.EmptyRegularizator{},
 		Bias:   true,
 	}, degree)
+}
+
+func defaultQuadratic(dim int) ml.Model {
+	return ml.NewQuadraticModel(ml.Config{
+		RowLen: dim,
+		Loss:   ml.MSELoss{},
+		Reg:    ml.EmptyRegularizator{},
+		Bias:   true,
+	})
 }
 
 func testScore(t *testing.T, ds DataSet, m ml.Model) {

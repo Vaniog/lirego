@@ -100,7 +100,7 @@ func ReadCsvFile(filePath string) ([][]string, error) {
 func parseRow(row []string) (Row, error) {
 	train, err := filter.MapWithError(row,
 		func(s string) (float64, error) {
-			return strconv.ParseFloat(s, 32)
+			return strconv.ParseFloat(s, 64)
 		})
 	if err != nil {
 		return Row{}, err

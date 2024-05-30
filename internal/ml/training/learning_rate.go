@@ -18,6 +18,6 @@ func GeometricLearningRate(s, d float64) LearningRate {
 
 func ExponentialLearningRate(s, d float64) LearningRate {
 	return func(n int) float64 {
-		return s * math.Exp(float64(n)*d)
+		return s * math.Exp(-float64(n)*d)
 	}
 }
