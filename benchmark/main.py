@@ -56,7 +56,7 @@ def main1():
 def main3():
     name = "deg_ndim.csv"
     _, train, test = generate(name,
-                              GeneratorConfig(dim=20, rows=1000, noize=0.5, functions=Functions.ALL, split=(0.7, 0.3)))
+                              GeneratorConfig(dim=1, rows=100000, noize=0.5, functions=Functions.ALL, split=(0.7, 0.3)))
 
     res = []
     f1 = lambda: train_and_test_sklearn("sklearn", f"../internal/test-data/{train}", f"../internal/test-data/{test}")
@@ -69,7 +69,7 @@ def main3():
                                 otherParams=[1]),
     ))
     f2.__name__ = "go"
-    res.append(f1)
+    res.append(f2)
 
     br = BenchmarkResult.compare(res)
     br.top(*br.results[0].parameters())
@@ -77,15 +77,15 @@ def main3():
 
 
 def main2():
-    name = "dataset_1dim.csv"
+    name = "visualisation_ndim.csv"
     _, train, test = generate(name,
-                              GeneratorConfig(dim=1, rows=1000, noize=2, functions=Functions.ALL, split=(0.7, 0.3)))
+                              GeneratorConfig(dim=1, rows=100, noize=0.1, functions=Functions.ALL, dist_x=1.5, dist_y=5))
     s = get_stub()
     r = s.train(TrainRequest(
         path=test,
-        trainerConfig=TrainerConfig(type="GreedyTrainer", params=[0.01, 100000, 0.001]),
+        trainerConfig=TrainerConfig(type="BatchTrainer", params=[25, 100000, 0, 1.5]),
         modelConfig=ModelConfig(type="PolynomialModel", regularizator="EmptyRegularizator", loss="MSELoss",
-                                otherParams=[5]),
+                                otherParams=[10]),
     ))
     print(r)
     plot_model_over_dataset(f"../internal/test-data/{name}", r.modelId)
@@ -93,6 +93,6 @@ def main2():
 
 
 if __name__ == '__main__':
-    # main2()
+    main2()
     # main1()
-    main3()
+    # main3()
