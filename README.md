@@ -11,7 +11,10 @@ Team:
 # Lirego
 Function prediction and other optimization problems solution with linear regression
 
-# Examples
+## Presentation
+[Goрдость.pdf](/Goрдость.pdf)
+
+## Examples
 Polynomial: \
 ![polynom](/_predictions/polynom.png)
 
