@@ -14,6 +14,9 @@ Function prediction and other optimization problems solution with linear regress
 ## Presentation
 [Goрдость.pdf](/Goрдость.pdf)
 
+## Benchmarks
+[benchmarks](/benchmark/benchmarks.ipynb)
+
 ## Examples
 Polynomial: \
 ![polynom](/_predictions/polynom.png)
