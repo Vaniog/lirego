@@ -48,7 +48,12 @@ func getTrainer(config *generated.TrainerConfig) training.Trainer {
 			int(config.Params[1]),
 			getLearningRate(config.Params[2:]),
 		)
+	case "GoDeepTrainer":
+		return training.NewGoDeepTrainer(
+			int(config.Params[0]),
+		)
 	}
+
 	return nil
 }
 
@@ -92,6 +97,8 @@ func NewModelSerializer(path string) *ModelSerializer {
 
 func (s *ModelSerializer) Serialize(model ml.Model) (string, error) {
 	fmt.Println(model.Bias())
+	fmt.Println(model.Weights())
+	fmt.Println(model.Weights().RawVector().Data)
 	transportModel := &generated.Model{
 		Weights:     model.Weights().RawVector().Data,
 		Type:        getModelName(model),
@@ -130,7 +137,7 @@ func (s *ModelSerializer) Deserialize(id string) (ml.Model, error) {
 	if err != nil {
 		return nil, err
 	}
-	model := getModel(transportModel.Type, ml.Config{RowLen: int(transportModel.RowLen)}, transportModel.OtherParams...)
+	model := getModel(transportModel.Type, ml.Config{RowLen: int(transportModel.RowLen), Bias: true}, transportModel.OtherParams...)
 	model.SetWeights(mat.NewVecDense(len(transportModel.Weights), transportModel.Weights))
 	model.SetBias(transportModel.Bias)
 	return model, nil

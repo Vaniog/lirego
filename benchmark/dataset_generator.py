@@ -34,8 +34,8 @@ class GeneratorConfig:
     dim: int = 2
     rows: int = 10_000
     noize: float = 0.01
-    dist_y: float = 5
-    dist_x: float = 5
+    dist_y: float = 1
+    dist_x: float = 1
     split: tp.Tuple[float, float] = (1, 0)
     functions: tp.List[tp.Callable[[float], float]] = dataclasses.field(default_factory=lambda: Functions.ALL)
 
@@ -64,8 +64,8 @@ def generate(output: str, cfg: GeneratorConfig):
             idx = i % batch_size
             if idx == 0:
                 _save_buffer(output, buffer)
-            x = (np.random.random(cfg.dim) - 0.5) * cfg.dist_x
-            buffer[idx] = [*x, raw_func(x * cfg.dist_y) + noize[idx]]
+            x = (np.random.random(cfg.dim) - 0.5)
+            buffer[idx] = [*x, raw_func(x * cfg.dist_y * cfg.dist_x) + noize[idx]]
             i += 1
         _save_buffer(output, buffer)
 

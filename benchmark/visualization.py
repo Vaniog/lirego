@@ -123,7 +123,7 @@ if __name__ == '__main__':
     s = get_stub()
     r = s.train(TrainRequest(
         path="test_1dim.csv",
-        trainerConfig=TrainerConfig(type="GreedyTrainer", params=[0.01, 100000, 0.001]),
+        trainerConfig=TrainerConfig(type="BatchTrainer", params=[10, 1000, 0, 1]),
         modelConfig=ModelConfig(type="PolynomialModel", regularizator="EmptyRegularizator", loss="MSELoss",
                                 otherParams=[5]),
     ))

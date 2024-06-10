@@ -14,6 +14,7 @@ import matplotlib.colors as mcolors
 from benchmark.sktlearn import load_data
 from benchmark.transport import get_stub
 from benchmark.transport.generated.api_pb2 import TrainResponse, TrainRequest, PredictRequest, DataSet, Row
+from sklearn.metrics import r2_score
 
 MAX_INT = 10 ** 9
 
@@ -22,14 +23,13 @@ MAX_INT = 10 ** 9
 class ExperimentResult:
     name: str
     accuracy: float
-    memory: int
     time: float
 
     def __iter__(self):
         return iter(dataclasses.asdict(self).values())
 
     def headers(self):
-        return list(dataclasses.asdict(self).keys())
+        return "name", "accuracy", "time"
 
     def parameters(self):
         return list(filter(lambda el: el != 'name', dataclasses.asdict(self).keys()))
@@ -61,6 +61,7 @@ class BenchmarkResult:
 
     def print_results(self, sort_by: tp.Callable = None, name="RESULTS"):
         print(name)
+
         res = sorted(self.results, key=sort_by) if sort_by is not None else self.results
         print(tabulate(res, headers=self.results[0].headers(), tablefmt='orgtbl',
                        floatfmt=".8f"))
@@ -140,7 +141,7 @@ def train_and_test(name: str, test_dataset_path: str, trainRequest: TrainRequest
     res = ExperimentResult(
         name=name,
         accuracy=accuracy,
-        memory=train_response.benchmark.mem,
+        # memory=train_response.benchmark.mem,
         time=train_response.benchmark.time
     )
     return res
@@ -163,24 +164,20 @@ def train_and_test_sklearn(name: str, train_dataset_path: str, test_dataset_path
     res = ExperimentResult(
         name=name,
         accuracy=accuracy,
-        memory=0,
         time=int(t * 1000),
     )
     return res
 
 
 def calc_accuracy(real_values, predicted_values):
-    score = 1
-    for predicted, real in zip(predicted_values, real_values):
-        score += (predicted - real) ** 2
-    return 1 / score
+    return r2_score(real_values, predicted_values)
 
 
 if __name__ == '__main__':
     fs = []
     for i in range(10):
         def f(i):
-            return lambda: ExperimentResult(f"test{i}", 0.1 * i, 10 * i, 10000 / (i + 1))
+            return lambda: ExperimentResult(f"test{i}", 0.1 * i, 10000 / (i + 1))
 
 
         fs.append(f(i))
